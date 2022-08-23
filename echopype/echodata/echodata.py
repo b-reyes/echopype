@@ -772,8 +772,10 @@ class EchoData:
         overwrite : bool
             whether or not to overwrite existing files
             Defaults to ``False``
-        parallel : bool
-            whether or not to use parallel processing. (Not yet implemented)
+        compute : bool
+            If True writes ``EchoData`` immediately, otherwise
+            returns a list of ``dask.delayed.Delayed`` objects
+            representing the groups of the ``EchoData`` object.
         output_storage_options : dict
             Additional keywords to pass to the filesystem class.
         """
@@ -794,8 +796,10 @@ class EchoData:
         overwrite : bool
             whether or not to overwrite existing files
             Defaults to ``False``
-        parallel : bool
-            whether or not to use parallel processing. (Not yet implemented)
+        compute : bool
+            If True writes ``EchoData`` immediately, otherwise
+            returns a list of ``dask.delayed.Delayed`` objects
+            representing the groups of the ``EchoData`` object.
         output_storage_options : dict
             Additional keywords to pass to the filesystem class.
         """
