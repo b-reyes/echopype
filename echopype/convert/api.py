@@ -110,8 +110,8 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
 
     group_saves = []
 
-    # Top-level group
-    group_saves.append(io.save_file(echodata["Top-level"], path=output_path, mode="w", engine=engine))
+    # Top-level group, this group must always be computed to allow for parallel writes
+    group_saves.append(io.save_file(echodata["Top-level"], path=output_path, mode="w", engine=engine, compute=compute))
 
     # Environment group
     if "time1" in echodata["Environment"]:
@@ -124,6 +124,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
             mode="a",
             engine=engine,
             group="Environment",
+            compute=compute
         ))
     else:
         group_saves.append(io.save_file(
@@ -132,6 +133,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
             mode="a",
             engine=engine,
             group="Environment",
+            compute=compute
         ))
 
     # Platform group
@@ -142,6 +144,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
         engine=engine,
         group="Platform",
         compression_settings=COMPRESSION_SETTINGS[engine] if compress else None,
+        compute=compute
     ))
 
     # Platform/NMEA group: some sonar model does not produce NMEA data
@@ -153,6 +156,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
             engine=engine,
             group="Platform/NMEA",
             compression_settings=COMPRESSION_SETTINGS[engine] if compress else None,
+            compute=compute
         ))
 
     # Provenance group
@@ -162,6 +166,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
         group="Provenance",
         mode="a",
         engine=engine,
+        compute=compute
     ))
 
     # Sonar group
@@ -171,6 +176,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
         group="Sonar",
         mode="a",
         engine=engine,
+        compute=compute
     ))
 
     # /Sonar/Beam_groupX group
@@ -188,6 +194,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
                 engine=engine,
                 group=f"Sonar/Beam_group{i}",
                 compression_settings=COMPRESSION_SETTINGS[engine] if compress else None,
+                compute=compute
             ))
     else:
         group_saves.append(io.save_file(
@@ -203,6 +210,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
             engine=engine,
             group=f"Sonar/{BEAM_SUBGROUP_DEFAULT}",
             compression_settings=COMPRESSION_SETTINGS[engine] if compress else None,
+            compute=compute
         ))
         if echodata["Sonar/Beam_group2"] is not None:
             # some sonar model does not produce Sonar/Beam_group2
@@ -219,6 +227,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
                 engine=engine,
                 group="Sonar/Beam_group2",
                 compression_settings=COMPRESSION_SETTINGS[engine] if compress else None,
+                compute=compute
             ))
 
     # Vendor_specific group
@@ -233,6 +242,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
             engine=engine,
             group="Vendor_specific",
             compression_settings=COMPRESSION_SETTINGS[engine] if compress else None,
+            compute=compute
         ))
     else:
         group_saves.append(io.save_file(
@@ -242,6 +252,7 @@ def _save_groups_to_file(echodata, output_path, engine, compress=True, compute=T
             engine=engine,
             group="Vendor_specific",
             compression_settings=COMPRESSION_SETTINGS[engine] if compress else None,
+            compute=compute
         ))
 
     return group_saves

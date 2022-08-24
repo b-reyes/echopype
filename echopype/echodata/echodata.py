@@ -773,13 +773,18 @@ class EchoData:
             whether or not to overwrite existing files
             Defaults to ``False``
         compute : bool
-            If True writes ``EchoData`` immediately, otherwise
-            returns a list of ``dask.delayed.Delayed`` objects
-            representing the groups of the ``EchoData`` object.
+            ``compute=False`` has not been implemented yet, it will
+            be changed to ``True`` If True writes ``EchoData``
+            immediately, otherwise returns a list of ``dask.delayed.Delayed``
+            objects representing the groups of the ``EchoData`` object.
         output_storage_options : dict
             Additional keywords to pass to the filesystem class.
         """
         from ..convert.api import to_file
+
+        if 'compute' in kwargs.keys() and not kwargs['compute']:
+            kwargs['compute'] = True
+            warnings.warn('compute=False has not been implemented for to_netcdf, setting compute=True.', UserWarning)
 
         return to_file(self, "netcdf4", save_path=save_path, **kwargs)
 
