@@ -88,19 +88,12 @@ class ParseEK(ParseBase):
                     # Sort complex and power/angle channels and pad NaN
                     self.ch_ids[data_type].append(k)
                     self.ping_data_dict[data_type][k] = self.pad_shorter_ping(v)
-            # Transmit data
-            # self.rectangularize_transmit_ping_data(data_type)
 
     def rectangularize_transmit_ping_data(self) -> None:
         """
         Rectangularize the ``data_type`` data within transmit ping data.
         Additionally, convert the data to a numpy array
         indexed by channel.
-
-        Parameters
-        ----------
-        data_type: str
-            The key of ``self.ping_data_dict_tx`` to rectangularize
         """
 
         # Transmit data

@@ -425,43 +425,6 @@ def open_raw(
 
     parser.parse_raw()
 
-    # # code block corresponding to directly writing parsed data to zarr
-    # if offload_to_zarr and (sonar_model in ["EK60", "ES70", "EK80", "ES80", "EA640"]):
-
-    #     # Determines if writing to zarr is necessary and writes to zarr
-    #     p2z = SONAR_MODELS[sonar_model]["parsed2zarr"](parser)
-
-    #     # TODO: perform more robust tests for the 'auto' heuristic value
-    #     if offload_to_zarr == "auto" and p2z.write_to_zarr(mem_mult=0.4):
-
-    #         p2z.datagram_to_zarr(max_mb=max_zarr_mb)
-
-    #         # rectangularize complex transmit ping data, if it exists
-    #         if "complex" in parser.ping_data_dict_tx.keys():
-    #             parser.rectangularize_transmit_ping_data(data_type="complex")
-
-    #     elif offload_to_zarr is True:
-
-    #         p2z.datagram_to_zarr(max_mb=max_zarr_mb)
-
-    #         # rectangularize complex transmit ping data, if it exists
-    #         if "complex" in parser.ping_data_dict_tx.keys():
-    #             parser.rectangularize_transmit_ping_data(data_type="complex")
-
-    #     else:
-    #         del p2z
-    #         p2z = Parsed2Zarr(parser)
-    #         if "ALL" in parser.data_type:
-    #             parser.rectangularize_data()
-
-    # else:
-    #     p2z = Parsed2Zarr(parser)
-    #     if (sonar_model in ["EK60", "ES70", "EK80", "ES80", "EA640"]) and (
-    #         "ALL" in parser.data_type
-    #     ):
-    #         parser.rectangularize_data()
-
-    # Direct offload to zarr and rectangularization only available for some sonar models
     if sonar_model in ["EK60", "ES70", "EK80", "ES80", "EA640"]:
 
         # Determines if writing to zarr is necessary and writes to zarr
