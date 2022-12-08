@@ -246,6 +246,8 @@ class ZarrCombine:
         # Dataframe with column as dim names and rows as the different Datasets
         self.dims_df = pd.DataFrame([ds.dims for ds in ds_list])
 
+        # TODO: drop NaN rows for the case where we
+
         # calculate useful information about the dimensions
         self.dims_sum = self.dims_df.sum(axis=0).to_dict()
         self.dims_csum = self.dims_df.cumsum(axis=0).to_dict()

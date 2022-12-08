@@ -217,6 +217,39 @@ def test_combine_echodata(raw_datasets):
     client.close()
 
 
+def test_mult_comb(ek60_test_data):
+
+
+    eds = [echopype.open_raw(file, "EK60") for file in ek60_test_data]
+
+    # create temporary directory for zarr store
+    temp_zarr_dir = tempfile.TemporaryDirectory()
+
+    comb2_zarr_file_name = os.path.join(temp_zarr_dir.name, "combined_echodatas2.zarr")
+    comb1_zarr_file_name = os.path.join(temp_zarr_dir.name, "combined_echodatas1.zarr")
+
+    # create dask client
+    client = Client()
+
+    combined_ed = echopype.combine_echodata(
+        eds[:-1],
+        zarr_path=comb1_zarr_file_name,
+        overwrite=True, client=client
+    )
+
+
+    combined_ed2 = echopype.combine_echodata(
+        [combined_ed, eds[-1]],
+        zarr_path=comb2_zarr_file_name,
+        overwrite=True, client=client
+    )
+
+    temp_zarr_dir.cleanup()
+
+    # close client
+    client.close()
+
+
 def test_attr_storage(ek60_test_data):
     # check storage of attributes before combination in provenance group
     eds = [echopype.open_raw(file, "EK60") for file in ek60_test_data]
